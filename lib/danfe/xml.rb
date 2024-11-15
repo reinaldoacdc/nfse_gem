@@ -1,10 +1,6 @@
 require "prawn"
 require "prawn/table"
 require "prawn/measurement_extensions"
-require "barby"
-require "barby/barcode/code_128"
-require 'barby/barcode/qr_code'
-require "barby/outputter/prawn_outputter"
 require "nokogiri"
 require 'ostruct'
 require 'yaml'

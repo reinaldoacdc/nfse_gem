@@ -33,14 +33,7 @@ module Pdf
       self.text_box title, :size => 10, :at => [x.cm, Helper.invert(y.cm) - 2], :width => w.cm, :height => h.cm, :style => :bold
     end
 
-    def ibarcode(h, w, x, y, info)
-      info = info.gsub(/\D/, '')
-      Barby::Code128C.new(info).annotate_pdf(self, :x => x.cm, :y => Helper.invert(y.cm), :width => w.cm, :height => h.cm) if info != ''
-    end
 
-    def iqrcode(x, y, info, size = nil)
-      Barby::QrCode.new(info, :level => :q, :size => size).annotate_pdf(self, :x => x.cm, :y => Helper.invert(y.cm)) if info != ''
-    end
 
     def irectangle(h, w, x, y)
       self.stroke_rectangle [x.cm, Helper.invert(y.cm)], w.cm, h.cm

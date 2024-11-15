@@ -28,7 +28,7 @@ module Pdf
       @municipios ||= JSON.parse(File.read(File.join(lib_path, 'municipios.json')))
     end
 
-    def generatePDF(pdf_path)      
+    def generatePDF      
       render_titulo
       render_prestador
       render_tomador
@@ -36,7 +36,7 @@ module Pdf
       render_discriminacao
       render_valor_total
       render_outras
-      @pdf.render_file pdf_path
+      return @pdf.render
     end
 
     private
@@ -45,7 +45,7 @@ module Pdf
         "PREFEITURA DO MUNICÍPIO DE #{municipios[@xml['InfNfse/PrestadorServico/Endereco/CodigoMunicipio']].upcase} \n" +
         "Secretaria Municipal da Fazenda \n" +
         "NOTA FISCAL ELETRÔNICA DE SERVIÇOS - NFS-e \n" +
-        "RPS n° #{@xml['IdentificacaoRps/Numero']}, emitido em #{@xml['DataEmissaoRps']}", {:align => :center, :valign => :center}
+        "RPS n° #{@xml['IdentificacaoRps/Numero']}, emitido em #{@xml['DataEmissao']}", {:align => :center, :valign => :center}
 
       @pdf.ibox 0.85, 4.47, 16.35, 0.42, "NÚMERO DA NOTA", "#{@xml['InfNfse/Numero'].rjust(8,'0')}"
       @pdf.ibox 0.85, 4.47, 16.35, 1.27, "DATA E HORA DE EMISSÃO", "#{@xml['InfNfse/DataEmissao'].gsub('T', ' ')}"
@@ -68,19 +68,23 @@ module Pdf
       @pdf.ibox 4.25, 20.57, 0.25, 7.22
       @pdf.ibox 0.85, 20.57, 0.25, 7.22, '', 'TOMADOR DE SERVIÇOS', {border: 0, style: :bold,:align => :center, :valign => :center}
       @pdf.ibox 0.85, 20.57, 0.25, 8.07, "Nome/Razão Social", "#{@xml['TomadorServico/RazaoSocial']}", {border: 0}
-      @pdf.ibox 0.85, 12,    0.25, 8.92, "CPF/CNPJ", "#{@xml['TomadorServico/IdentificacaoTomador/CpfCnpj/Cnpj'] || @xml['TomadorServico/IdentificacaoTomador/CpfCnpj/Cpf']}", {border: 0}
-      @pdf.ibox 0.85, 4.47,  12,   8.92, "Inscrição Municipal", "#{@xml['IdentificacaoTomador/InscricaoMunicipal']}", {border: 0}
+      cpf_cnpj =  @xml['TomadorServico/IdentificacaoTomador/CpfCnpj/Cnpj']
+      if cpf_cnpj.empty? then cpf_cnpj = @xml['TomadorServico/IdentificacaoTomador/CpfCnpj/Cpf'] end
+      @pdf.ibox 0.85, 12,    0.25, 8.92, "CPF/CNPJ", "#{cpf_cnpj}", {border: 0}
+      @pdf.ibox 0.85, 4.47,  12,   8.92, "Inscrição Municipal", "#{@xml['TomadorServico/IdentificacaoTomador/InscricaoMunicipal']}", {border: 0}
       @pdf.ibox 0.85, 20.57, 0.25, 9.77, "Endereço", "#{@xml['TomadorServico/Endereco/Endereco']}", {border: 0}
       @pdf.ibox 0.85, 10,    0.25, 10.62, "Município", "#{municipios[@xml['TomadorServico/Endereco/CodigoMunicipio']]}", {border: 0}
       @pdf.ibox 0.85, 4.47,  10,   10.62, "UF", "#{@xml['TomadorServico/Endereco/Uf']}", {border: 0}
       @pdf.ibox 0.85, 4.47,  15,   10.62, "E-mail", "#{@xml['TomadorServico/Contato/Email']}", {border: 0}
     end
 
-    def render_intermediario      
+    def render_intermediario
       @pdf.ibox 1.70, 20.57, 0.25,  11.47
       @pdf.ibox 0.85, 20.57, 0.25,  11.47, '', 'INTERMEDIÁRIO DE SERVIÇOS', {border: 0, style: :bold,:align => :center, :valign => :center}
-      @pdf.ibox 0.85, 12,    0.25,  12.32, "Nome/Razão Social", "#{@xml['IdentificacaoIntermediarioServico/RazaoSocial']}", {border: 0}
-      @pdf.ibox 0.85, 8,     12.25, 12.32, "CPF/CNPJ", "#{@xml['IdentificacaoIntermediarioServico/CpfCnpj/Cnpj'] || @xml['IdentificacaoIntermediarioServico/CpfCnpj/Cpf']}", {border: 0}
+      @pdf.ibox 0.85, 12,    0.25,  12.32, "Nome/Razão Social", "#{@xml['IntermediarioServico/IdentificacaoIntermediarioServico/RazaoSocial']}", {border: 0}
+      cpf_cnpj =  @xml['IntermediarioServico/IdentificacaoIntermediarioServico/CpfCnpj/Cnpj']
+      if cpf_cnpj.empty? then cpf_cnpj = @xml['IntermediarioServico/IdentificacaoIntermediarioServico/CpfCnpj/Cpf'] end
+      @pdf.ibox 0.85, 8,     12.25, 12.32, "CPF/CNPJ", "#{cpf_cnpj}", {border: 0}
     end
 
     def render_discriminacao

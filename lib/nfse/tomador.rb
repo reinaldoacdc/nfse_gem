@@ -49,6 +49,10 @@ module Nfse
             def complemento
                 if @complemento.empty? then nil else @complemento end
             end
+
+            def cep 
+                if @cep.empty? then nil else @cep.scan(/\d/).join end    
+            end
         end
 
     end

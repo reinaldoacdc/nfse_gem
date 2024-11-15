@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-    xmlns:tem="http://tempuri.org/">
-    <soapenv:Header>
-        <tem:cabecalho versao="202">
-            <tem:versaoDados>2.02</tem:versaoDados>
-        </tem:cabecalho>
-    </soapenv:Header>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
     <soapenv:Body>
-        <tem:ConsultarLoteRps>
-            <tem:xmlEnvio><![CDATA[<?xml version="1.0" encoding="UTF-8"?><ConsultarLoteRpsEnvio><Prestador><CpfCnpj><Cnpj>{{cnpj}}</Cnpj></CpfCnpj><InscricaoMunicipal>{{inscricao_municipal}}</InscricaoMunicipal></Prestador><Protocolo>{{protocolo}}</Protocolo></ConsultarLoteRpsEnvio>]]></tem:xmlEnvio>
-        </tem:ConsultarLoteRps>
+        <ns2:ConsultarLoteRpsRequest xmlns:ns2="http://ws.bhiss.pbh.gov.br">
+            <nfseCabecMsg>
+                <![CDATA[<cabecalho versao="1.00" xmlns="http://www.abrasf.org.br/nfse.xsd"><versaoDados>1.00</versaoDados></cabecalho>]]>
+            </nfseCabecMsg>
+            <nfseDadosMsg>
+                <![CDATA[<![CDATA[
+                <ConsultarLoteRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+                <Prestador><CpfCnpj><Cnpj>{{cnpj}}</Cnpj></CpfCnpj><InscricaoMunicipal>{{inscricao_municipal}}</InscricaoMunicipal></Prestador>
+                <Protocolo>{{protocolo}}</Protocolo>
+                </ConsultarLoteRpsEnvio>]]>
+            </nfseDadosMsg>
+        </ns2:ConsultarLoteRpsRequest>
     </soapenv:Body>
 </soapenv:Envelope>

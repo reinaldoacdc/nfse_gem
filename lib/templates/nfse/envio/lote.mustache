@@ -1,21 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnviarLoteRpsSincronoEnvio>
-    <LoteRps Id="{{id}}" versao="2.02">
+<GerarNfseEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+    <LoteRps Id="{{id}}" versao="1.00">
         <NumeroLote>{{numero_lote}}</NumeroLote>
-        <CpfCnpj>
-            <Cnpj>{{cnpj}}</Cnpj>
-        </CpfCnpj>
+        <Cnpj>{{cnpj}}</Cnpj>
         <InscricaoMunicipal>{{inscricao_municipal}}</InscricaoMunicipal>
         <QuantidadeRps>{{quantidade}}</QuantidadeRps>
-        <ListaRps>
-            {{{render_rps}}}
-        </ListaRps>
+        <ListaRps>{{{render_rps}}}</ListaRps>
     </LoteRps>
-    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="Ass_{{id}}">
         <SignedInfo>
-            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
             <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-            <Reference URI="#assinar">
+            <Reference URI="#{{id}}">
                 <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
                 <DigestValue>{{{digest_value}}}</DigestValue>
             </Reference>
@@ -26,5 +21,5 @@
                 <X509Certificate>{{{x509_certificate}}}</X509Certificate>
             </X509Data>
         </KeyInfo>
-    </Signature>    
-</EnviarLoteRpsSincronoEnvio>    
+    </Signature>
+</GerarNfseEnvio>

@@ -1,19 +1,34 @@
 <Rps>
-    <InfDeclaracaoPrestacaoServico Id="assinar">
-        <Rps>
-            <IdentificacaoRps>
-                <Numero>{{numero}}</Numero>
-                <Serie>{{serie}}</Serie>
-                <Tipo>{{tipo}}</Tipo>
-            </IdentificacaoRps>    
-            <DataEmissao>{{data_emissao}}</DataEmissao>
-            <Status>1</Status>
-        </Rps>
-        <Competencia>{{data_competencia}}</Competencia>
+    <InfRps xmlns="http://www.abrasf.org.br/nfse.xsd" Id="rps{{numero}}{{serie}}">
+        <IdentificacaoRps xmlns="http://www.abrasf.org.br/nfse.xsd">
+            <Numero>{{numero}}</Numero>
+            <Serie>{{serie}}</Serie>
+            <Tipo>{{tipo}}</Tipo>
+        </IdentificacaoRps>    
+        <DataEmissao>{{data_emissao}}</DataEmissao>
+        <NaturezaOperacao>1</NaturezaOperacao>
+        <RegimeEspecialTributacao>6</RegimeEspecialTributacao>
+        <OptanteSimplesNacional>{{simples_nacional}}</OptanteSimplesNacional>
+        <IncentivadorCultural>2</IncentivadorCultural>
+        <Status>1</Status>
         {{{servico.render}}}
         {{{prestador.render}}}
-		{{{tomador.render}}}        
-        <OptanteSimplesNacional>{{simples_nacional}}</OptanteSimplesNacional>
-        <IncentivoFiscal>{{icentivo_fiscal}}</IncentivoFiscal>
-    </InfDeclaracaoPrestacaoServico>
+		{{{tomador.render}}}
+    </InfRps>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="Ass_rps{{numero}}{{serie}}">
+        <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+            <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <Reference URI="#rps{{numero}}{{serie}}">
+                <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <DigestValue>{{{digest_value}}}</DigestValue>
+            </Reference>
+        </SignedInfo>
+        <SignatureValue>{{{signature_value}}}</SignatureValue>
+        <KeyInfo>
+            <X509Data>
+                <X509Certificate>{{{x509_certificate}}}</X509Certificate>
+            </X509Data>
+        </KeyInfo>
+    </Signature>
 </Rps>

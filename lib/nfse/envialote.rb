@@ -13,27 +13,24 @@ module Nfse
         end
 
         def enviar_lote_rps()
-            wsdl = get_wsdl[@code_ibge]
-            client = Savon.client(wsdl: wsdl)   
-            @xml_lote = self.assinar_xml(@lote.render, 'cert.pem')        
-
+            wsdl = get_wsdl[@code_ibge]          
+            client = Savon.client(
+              wsdl: wsdl, 
+              ssl_cert: OpenSSL::X509::Certificate.new(File.read('cert.pem')), 
+              ssl_cert_key: OpenSSL::PKey::RSA.new(File.read('cert.pem'))
+            )
+            @xml_lote = self.assinar_xml(@lote.render, 'cert.pem').gsub('<?xml version="1.0"?>', '')
             #export_xml(self.render, 'teste-signed.xml')
-            response = client.call(:enviar_lote_rps_sincrono, xml: self.render)
-            data = response.body
-            
-            puts data
-            data = data[:enviar_lote_rps_sincrono_response][:enviar_lote_rps_sincrono_result]                
-
+            response = client.call(:gerar_nfse, xml: self.render)
+            data = response.body[:gerar_nfse_response][:output_xml]
             #Tratar retorno com erros
             xml = Nokogiri::XML(data)
-            if xml.xpath("//MensagemRetorno").empty?
-              return data[:enviar_lote_rps_sincrono_response][:enviar_lote_rps_sincrono_result]                
+            if xml.xpath('//xmlns:MensagemRetorno').empty?
+              return data
             else
               puts data
               return nil
             end
-
-            return data[:enviar_lote_rps_sincrono_response][:enviar_lote_rps_sincrono_result]                
         end
     
         def assinar_xml(xml_original, certificado)
@@ -61,10 +58,9 @@ module Nfse
           OpenSSL::X509::Certificate.new(File.read(pem_file)).to_pem.each_line do |line|
             certificate += line unless /^-{5}/.match(line)
           end
-         
-          signed_xml.xpath(path, {"ds" => "http://www.w3.org/2000/09/xmldsig#"}).each do |element|          
-            element.content = certificate
-          end
+
+          signed_xml.xpath(path, {"ds" => "http://www.w3.org/2000/09/xmldsig#"}).last.content = certificate
+
           signed_xml.to_xml(:save_with => Nokogiri::XML::Node::SaveOptions::AS_XML)
         end
          
