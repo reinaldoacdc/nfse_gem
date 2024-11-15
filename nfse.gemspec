@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
 
 
     gem.add_dependency 'mustache', '~> 0.99'
-    gem.add_dependency 'savon', '~> 2.12.0'
+    gem.add_dependency 'savon', '~> 2.15.0'
     gem.add_dependency 'xmldsig', '~> 0.6.6'
     
     gem.add_dependency "nokogiri", "~> 1.8"
