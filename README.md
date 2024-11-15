@@ -1,3 +1,7 @@
+# How to install
+
+` bundle add nfse `
+
 # How to use 
 
 ## How send Nfse
