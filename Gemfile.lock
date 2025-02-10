@@ -21,7 +21,7 @@ GEM
     base64 (0.2.0)
     bigdecimal (3.1.8)
     builder (3.3.0)
-    date (3.4.0)
+    date (3.4.1)
     faraday (2.12.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -50,7 +50,7 @@ GEM
     mutex_m (0.2.0)
     net-http (0.5.0)
       uri
-    net-imap (0.5.1)
+    net-imap (0.5.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -85,7 +85,7 @@ GEM
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
       wasabi (>= 3.7, < 6)
-    timeout (0.4.2)
+    timeout (0.4.3)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
     uri (1.0.2)
