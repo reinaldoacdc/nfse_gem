@@ -12,7 +12,7 @@ module Nfse
                 }
             else
                 {
-                    '3106200' => 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse?wsdl'
+                    '3106200' => 'https://bhisshomologaws.pbh.gov.br/bhiss-ws/nfse?wsdl'
                 }
             end
         end
